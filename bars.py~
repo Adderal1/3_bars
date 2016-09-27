@@ -1,4 +1,5 @@
 import json
+import math
 
 
 def load_from_json(filepath):
@@ -7,14 +8,24 @@ def load_from_json(filepath):
 
 
 def get_biggest_bar(data):
-    pass
+	help_dictionary=dict()	
+	for bar in data:
+		help_dictionary.update([(bar['Cells']['SeatsCount'],bar['Cells']['Name'])])
+	print('Bar with biggest area:')	
+	print(max(help_dictionary.keys()))
+	print(help_dictionary.get(max(help_dictionary.keys())))
 
 
 def get_smallest_bar(data):
-    pass
+	help_dictionary=dict()	
+	for bar in data:
+		help_dictionary.update([(bar['Cells']['SeatsCount'],bar['Cells']['Name'])])
+	print('Bar with smallest area:')	
+	print(min(help_dictionary.keys()))
+	print(help_dictionary.get(min(help_dictionary.keys())))
 
 
-def get_closest_bar(data, longitude, latitude):
+def get_closest_bar(data):
 	try:
     		latitude = float(input('Enter latitude:  '))
 	except ValueError:
@@ -30,13 +41,22 @@ def get_closest_bar(data, longitude, latitude):
 
 	if longitude is None:
     		print('Sorry, there are no data!')
+	
+	help_dictionary=dict()	
+	for bar in data:
+		help_dictionary.update([(math.sqrt((bar['Cells']['geoData']['coordinates'][0]-longitude)*(bar['Cells']['geoData']['coordinates'][0]-longitude)+(bar['Cells']['geoData']['coordinates'][1]-latitude)*(bar['Cells']['geoData']['coordinates'][1]-latitude)),bar['Cells']['Name'])])
+	print(min(help_dictionary.keys()))
+	print(help_dictionary.get(max(help_dictionary.keys())))
+
 
 
 
 if __name__ == '__main__':
 	data = load_from_json('bar.json')
-	print(data)
-	get_closest_bar(data, 0, 0)
+	#print(data[1]['PublicPhone'])
+	get_biggest_bar(data)
+	get_smallest_bar(data)
+	get_closest_bar(data)
 
 
     
